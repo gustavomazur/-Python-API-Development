@@ -1,11 +1,17 @@
 from typing import Optional
-from fastapi import FastAPI, Response, status, HTTPException
+from fastapi import FastAPI, Response, status, HTTPException, Depends
 from fastapi.params import Body
 from pydantic import BaseModel
 from random import randrange
 import psycopg2
 from psycopg2.extras import RealDictCursor
-import time
+import time 
+from sqlalchemy.orm  import Session
+from .import models
+from .database import engine, get_db
+
+#código de inicialização do banco
+models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
@@ -29,10 +35,6 @@ while True:
         time.sleep(2)
 
 
-
-my_posts = [{"title": "title of post 1", "content": "content of post 1", "id": 1},
-             {"title": "Favorite foods", "content": "I like pizza", "id": 2} ]
-
 def find_post(id):
     for p in my_posts:
         if p["id"] == id:
@@ -47,10 +49,16 @@ def find_index_post(id):
 def root():
     return {"message": "Hello, World!"}
 
+@app.get("/sqlalchemy")
+def test_posts(db: Session = Depends(get_db)):
+
+    posts = db.query(models.Post).all()
+    return {"data": posts}
+
 #GET 
 @app.get("/posts")
 def get_posts():
-    cursor.execute("""SELECT * FROM pots """)
+    cursor.execute("""SELECT * FROM Post """)
     posts = cursor.fetchall()
     return {"data": posts}
 

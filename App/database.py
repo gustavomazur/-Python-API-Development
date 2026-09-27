@@ -11,7 +11,7 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()
 
-
+#Ela vai criar uma sessão com nosso banco de dados para cada requisição feita a esse endpoint específico da API.
 #Dependencia
 def get_db():
     db = SessionLocal()

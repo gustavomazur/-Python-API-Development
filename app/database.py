@@ -1,8 +1,20 @@
+import os
+
+from dotenv import load_dotenv
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-SQLALCHEMY_DATABASE_URL = 'postgresql://postgres:postgres123@localhost/fastapi'
+load_dotenv()
+
+SQLALCHEMY_DATABASE_URL = os.getenv("SQLALCHEMY_DATABASE_URL")
+
+if not SQLALCHEMY_DATABASE_URL:
+    raise RuntimeError(
+        "Variavel SQLALCHEMY_DATABASE_URL nao encontrada.\n"
+        "Crie o arquivo .env na raiz do projeto a partir do .env.example:\n"
+        "    cp .env.example .env"
+    )
 
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
 

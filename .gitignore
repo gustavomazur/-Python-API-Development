@@ -1,0 +1,30 @@
+# Ambiente virtual - não versionar
+venv/
+.venv/
+env/
+
+# Bytecode do Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Segredos - NUNCA versionar
+.env
+.env.local
+
+# Credenciais de banco
+*.db
+*.sqlite3
+
+# Ferramentas
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Editores / sistema operacional
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

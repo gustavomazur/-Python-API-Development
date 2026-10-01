@@ -1,16 +1,17 @@
-# API de Posts e Usuários
+# Python API Development - Comprehensive Course for Beginners
 
 API REST feita com **FastAPI**, **SQLAlchemy** e **PostgreSQL**, com autenticação
 por token **JWT** (OAuth2 Password Bearer).
 
-Projeto de estudo.
+### Projeto de estudo.
 
-## Requisitos
+
+###  Requisitos
 
 - Python 3.12 ou superior
 - PostgreSQL rodando na máquina
 
-## Bibliotecas
+### Bibliotecas
 
 Todas as versões usadas estão fixadas no `requirements.txt`. Para instalar tudo:
 
@@ -33,13 +34,15 @@ pip install -r requirements.txt
 Dependências diretas dessas bibliotecas também estão listadas no
 `requirements.txt` (instaladas automaticamente junto).
 
-## Configuração
+### Configuração
 
 O projeto guarda **segredos** num arquivo `.env` na raiz, que **não** vai para o
 GitHub. Para criar o seu:
 
 ```bash
-cp .env.example .env
+cria .env -> na raiz do projeto
+
+cp .env.example -> para .env mais com seus dados 
 ```
 
 Depois preencha no `.env`:
@@ -53,57 +56,31 @@ python -c "import secrets; print(secrets.token_hex(32))"
 SECRET_KEY=<a chave que voce gerou>
 ALGORITHM=HS256
 ACCESS_TOKEN_EXPIRE_MINUTES=30
-SQLALCHEMY_DATABASE_URL=postgresql://postgres:suaSenha@localhost:5432/fastapi
+SQLALCHEMY_DATABASE_URL=postgresql://postgres:suaSenha@localhost:5432/nome-do-seu-banco
 ```
-
-O `.env.example` explica o que cada variável faz.
 
 ### Banco de dados
 
-O banco `fastapi` precisa existir antes de rodar a API:
+O banco  precisa existir antes de rodar a API:
 
 ```bash
-createdb fastapi
+createdb nome-do-seu-banco
 ```
 
 As tabelas são criadas sozinhas na primeira execução — `main.py` chama
 `Base.metadata.create_all()` na inicialização.
 
-## Rodando
+### Rodando
 
 ```bash
 uvicorn app.main:app --reload
 ```
 
-A API sobe em `http://127.0.0.1:8000` e a documentação interativa fica em
-`http://127.0.0.1:8000/docs`.
+A API sobe em `http://127.0.0.1:8000`
 
-## Endpoints
+e a documentação interativa fica em `http://127.0.0.1:8000/docs`.
 
-Autenticação:
-
-| Método | Rota | Descrição |
-|---|---|---|
-| `POST` | `/login` | Recebe usuário e senha, devolve o token JWT |
-
-Usuários:
-
-| Método | Rota | Descrição |
-|---|---|---|
-| `POST` | `/users` | Cria um usuário |
-| `GET` | `/users/{id}` | Detalhes de um usuário |
-
-Posts:
-
-| Método | Rota | Descrição |
-|---|---|---|
-| `GET` | `/posts` | Lista todos os posts |
-| `POST` | `/posts` | Cria um post |
-| `GET` | `/posts/{id}` | Detalhes de um post |
-| `PUT` | `/posts/{id}` | Atualiza um post |
-| `DELETE` | `/posts/{id}` | Remove um post |
-
-## Como autenticar
+### Como autenticar
 
 Rotas protegidas esperam o header:
 
@@ -117,19 +94,4 @@ O token sai do `/login`:
 curl -X POST http://127.0.0.1:8000/login \
   -d "username=seu@email.com&password=suaSenha"
 ```
-
-## Estrutura
-
-```
-app/
-├── main.py       # cria a aplicação e registra as rotas
-├── database.py   # conexão com o banco e sessão
-├── models.py     # tabelas (User, Post)
-├── schemas.py    # formato do JSON de entrada e saída
-├── oauth2.py     # criação e validação do token JWT
-├── utils.py      # hash e verificação de senha
-└── routers/
-    ├── auth.py   # /login
-    ├── user.py   # /users
-    └── post.py   # /posts
-```
++

@@ -8,7 +8,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: fazendo pull do repositório Git
-        uses: actions/checkout@v2
-
-      - name: diga oi para mazur
-        run: echo "oii mazur"
+        uses: actions/checkout@v4
+      - name: install python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: update pip
+        run: python -m pip install --upgragde pip
+      - name: install all dependecies
+        run: pip install -r requirements.txt

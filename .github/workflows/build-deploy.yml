@@ -1,12 +1,14 @@
+
 name: Build and Deploy Code
 
 on: [push, pull_request]
 
 jobs:
   job1:
-    run-on: unbutu-lates
+    runs-on: ubuntu-latest
     steps:
-      - name: pulling git repo
+      - name: fazendo pull do repositório Git
         uses: actions/checkout@v2
-      - name: say hi to mazur
-        run: echo "hello mazur"
+
+      - name: diga oi para mazur
+        run: echo "oii mazur"

@@ -1,0 +1,12 @@
+name: Build and Deploy Code
+
+on: [push, pull_request]
+
+jobs:
+  job1:
+    run-on: unbutu-lates
+    steps:
+      - name: pulling git repo
+        uses: actions/checkout@v2
+      - name: say hi to mazur
+        run: echo "hello mazur"

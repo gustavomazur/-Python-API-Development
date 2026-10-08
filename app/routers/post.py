@@ -22,7 +22,10 @@ limit: int = 10, skip: int = 0, search: Optional[str] = ""):
         models.Vote, models.Vote.post_id == models.Post.id, isouter=True).group_by(models.Post.id).filter(
             models.Post.title.contains(search)).limit(limit).offset(skip).all()
 
-    return posts
+    return [
+         {"post": post, "votes": vote_acount}
+         for post, vote_acount in posts
+    ]
 
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model=schemas.Post)
 def create_post(post: schemas.PostCreat, db: Session = Depends(get_db),
@@ -35,10 +38,8 @@ def create_post(post: schemas.PostCreat, db: Session = Depends(get_db),
 
     return new_post
  
-@router.get("/{id}", response_model=schemas.Post)
+@router.get("/{id}", response_model=schemas.PostOut)
 def get_post(id: int, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
-
-    #post = db.query(models.Post).filter(models.Post.id == id).first()
 
     post = db.query(models.Post, func.count(models.Vote.post_id).label("votes")).join(
             models.Vote, models.Vote.post_id == models.Post.id, isouter=True).group_by(models.Post.id).filter(
@@ -48,8 +49,13 @@ def get_post(id: int, db: Session = Depends(get_db), current_user: int = Depends
     if not post:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"post with id: {id} was not found")
-    
-    return post
+
+    post, votes = post
+
+    return {
+        "post": post,
+        "votes": votes
+    }
 
 @router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_post(id: int, db: Session = Depends(get_db), current_user: models.User = Depends(oauth2.get_current_user)):
@@ -58,7 +64,7 @@ def delete_post(id: int, db: Session = Depends(get_db), current_user: models.Use
 
     post = post_query.first()
 
-    if post.first() == None:
+    if post is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"post with id: {id} does not exist")
 

@@ -24,11 +24,11 @@ class Post(PostBase):
     id: int 
     created_at: datetime
     user_id: int
-    ower: UserOut
+    owner: UserOut
     model_config = ConfigDict(from_attributes=True) 
 
-class PostOut(PostBase):
-    Post: Post
+class PostOut(BaseModel):
+    post: Post
     votes: int
     model_config = ConfigDict(from_attributes=True) 
 

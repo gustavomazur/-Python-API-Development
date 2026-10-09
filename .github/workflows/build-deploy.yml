@@ -73,12 +73,6 @@ jobs:
 
       # - name: Image digest
       #   run: echo ${{ steps.docker_build.outputs.digest }}
-  
-      # pull our github repo
-      # install cli do heroku
-      # heroku login
-      # add git remote for heroku
-      # git push heroku main 
 
   deploy:
     runs-on: ubuntu-latest
